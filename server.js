@@ -37,7 +37,7 @@ connection.connect((error) => {
 
 
 
-/*--------------Conexion a bd------------*/
+//--------------Conexion a bd------------
 
 app.listen(PORT);
 
@@ -63,11 +63,15 @@ var upload = multer({
 })// fin del multer
 
 
+// Formulario registro alumno
+
 app.post("/register", upload.single('file'),(req,res)=>{
 
     var name = req.body.nombre
     var career = req.body.carrera
-    var image = req.file.filename
+
+    var image = `public/images/${req.file.filename}`;
+
     var email = req.body.email
     var pass = req.body.password
     var interests = req.body.intereses
@@ -77,10 +81,89 @@ app.post("/register", upload.single('file'),(req,res)=>{
     var sql = 'INSERT INTO estudiantes (nombre, carrera, imagen,email,password,intereses,habilidades,objetivos) VALUES(?,?,?,?,?,?,?,?)';
 
     connection.query(sql,[name,career,image,email,pass,interests,skills,objectives],function(err,res){
-        if(err)throw errr
+        if(err)throw err
     })
 
     res.redirect('/index.html')
 
 })
 
+// Formulario inicio sesion
+
+const session = require('express-session');
+
+app.use(session({
+    secret: 'abcd1234',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false } // ajustar según sea necesario
+  }));
+  
+
+app.post("/login",(req,res)=>{
+
+    const email = req.body.email;
+    const pass = req.body.password;
+
+    connection.query('SELECT * FROM estudiantes where email = ? AND password=?',
+    [email,pass],
+    (error,results) =>{
+        if (error){
+            console.log(error)
+            res.send('Ocurrió un error al intentar iniciar sesión');
+        }else if (results.length>0){
+            req.session.loggedin = true;
+            req.session.user = results[0];
+            res.redirect('/welcome');
+        }else{
+            res.send('Credenciales incorrectas');
+        }
+
+    }
+    
+    )
+ })
+
+ app.get('/welcome', (req, res) => {
+    const user = req.session.user;
+
+    res.render('welcome', { user});
+  });
+
+
+
+  //Cerrar sesion
+
+  app.get('/logout', (req, res) => {
+    req.session.destroy((err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.redirect('/index.html');
+      }
+    });
+  });
+
+
+
+  //Mostrar alumnos sin sesion
+
+  app.get('/alumnosInicio',(req,res)=>{
+    connection.query('SELECT*FROM estudiantes',(error,rows)=>{
+        if(error) throw error
+        if (!error) {
+
+            res.render('alumnosInicio',{rows})
+
+        }
+
+    })
+  })
+
+  //Mostrar proyectos sin sesion
+
+  app.get('/proyectos',(req,res)=>{
+    
+    res.render('proyectos')
+    
+  })

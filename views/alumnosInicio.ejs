@@ -38,17 +38,33 @@
     </header>
 
     <section>
-        <div id="div1">
 
-            <h1>Bienvenido al anuario estudiantil donde encontraras los distintos logros estudiantiles de los estudiantes del año</h1>
-        
+        <div class="contenedor">
+
+        <%rows.forEach(estudiantes => {%>
+
+            <div class="card">
+    
+                <figure>
+                    <img src="<%=estudiantes.imagen %>" alt="">
+                </figure>
+    
+                <div class="contenido">
+                    <p><strong>Nombre:</strong><%=estudiantes.nombre %></p>
+                    <p>Carrera: <%=estudiantes.carrera %></p>
+                    <p>Intereses: <%=estudiantes.intereses %></p>
+                    <a href="#">Leer mas...</a>
+    
+                </div>
+    
+            </div>
+    
+        <%})%>
 
         </div>
 
     </section>
 
         
-
-
 </body>
 </html>

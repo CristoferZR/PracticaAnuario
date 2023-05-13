@@ -11,9 +11,11 @@
 <body>
     <header class="header">
         <div class="logo">
-            <a href="/index.html">
-                <h1>Anuario Estudiantil</h1>
+            <a href="#" id="perfilnav">
+                <h1>Bienvenido <%= user.nombre %></h1>
+                <img src="public<%= user.imagen %>" id="imgperfil">
             </a>
+
         </div>
         <div class="navigation">
 
@@ -21,27 +23,27 @@
             <div class="hamburger"></div>
 
             <ul class="menu">
-                
+
                 <li><a href="/alumnosInicio">Alumnos</a></li>
                 <li><a href="/proyectos">Proyectos</a></li>
-
+                
                 <div class="mar">
-                <button class="inbutton">
-                    <li><a href="/views/inicioSesion.html">Iniciar Sesion</a></li>
+                <button class="sbutton">
+                    <li><a href="#">Nuevo proyecto</a></li>
                 </button>
                 <button class="upbutton">
-                    <li><a href="/views/registro.html">Registrarse</a></li>
+                    <li><a href="/logout">Cerrar Sesion</a></li>
                 </button>
                 </div>
             </ul>
+
         </div>
     </header>
 
     <section>
         <div id="div1">
 
-            <h1>Bienvenido al anuario estudiantil donde encontraras los distintos logros estudiantiles de los estudiantes del año</h1>
-        
+            <h1>Bienvenido <%= user.email %></h1>
 
         </div>
 
