@@ -11,8 +11,8 @@
 <body>
     <header class="header">
         <div class="logo">
-            <a href="#" id="perfilnav">
-                <h1>Bienvenido <%= user.nombre %></h1>
+            <a href="/welcome" id="perfilnav">
+                <h1>Alumnos</h1>
             </a>
 
         </div>
@@ -37,29 +37,29 @@
     </header>
 
     <section>
+        <div class="contenedor">
+
+            <%rows.forEach(estudiantes => {%>
+    
+                <div class="card">
         
-        <div class="content">
-            <h2>Usuario Administrador</h2>
-            <div id="user-info">
-
-                <img src="<%=user.imagen%>" alt="" srcset="">
-                <div id="info-user">
-                    <h1>Nombre</h1>
-                    <p><%=user.nombre%></p>
-                    <h1>Email</h1>
-                    <p><%=user.email%></p>
-                    <h1>Info</h1>
-                    <p>Mas info</p>
-                    <h1>Info</h1>
-                    <p>Mas info</p>
+                    <figure>
+                        <img src="<%=estudiantes.imagen %>" alt="">
+                    </figure>
+        
+                    <div class="contenido">
+                        <p><strong>Nombre:</strong><%=estudiantes.nombre %></p>
+                        <p>Carrera: <%=estudiantes.carrera %></p>
+                        <p>Intereses: <%=estudiantes.intereses %></p>
+                        <a href="#">Leer mas...</a>
+        
+                    </div>
+        
                 </div>
-                <div id="button-user">
-                    <a href="/administracionAlumnos" class="miBoton">Administrar Alumnos</a>
-                    <a href="/administracionProyectos" class="miBoton">Administrar Proyectos</a>
-
-                </div>
+        
+            <%})%>
+    
             </div>
-        </div>
 
     </section>
 

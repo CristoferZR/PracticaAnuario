@@ -11,9 +11,10 @@
 <body>
     <header class="header">
         <div class="logo">
-            <a href="/index.html">
-                <h1>Anuario Estudiantil</h1>
+            <a href="/welcome" id="perfilnav">
+                <h1>Administracion</h1>
             </a>
+
         </div>
         <div class="navigation">
 
@@ -21,16 +22,17 @@
             <div class="hamburger"></div>
 
             <ul class="menu">
-            
+                <li><a href="/welcome">Inicio</a></li>
+                <li><a href="/alumnosSesion">Alumnos</a></li>
+                <li><a href="/proyectosSesion">Proyectos</a></li>
+                
                 <div class="mar">
-                <button class="inbutton">
-                    <li><a href="/views/inicioSesion.html">Iniciar Sesion</a></li>
-                </button>
                 <button class="upbutton">
-                    <li><a href="/views/registro.html">Registrarse</a></li>
+                    <li><a href="/logout">Cerrar Sesion</a></li>
                 </button>
                 </div>
             </ul>
+
         </div>
     </header>
 
@@ -38,7 +40,7 @@
 
         <h1>Registrarse</h1>
 
-	    <form action="/register" method="post" enctype="multipart/form-data">
+	    <form action="/register2" method="post" enctype="multipart/form-data">
 
 		<label for="nombre">Nombre completo:</label>
 		<input type="text" id="nombre" name="nombre" placeholder="Escribe tu nombre completo" required>

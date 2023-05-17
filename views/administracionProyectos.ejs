@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/styles.css">
+    <title>Anuario</title>
+</head>
+
+<body>
+    <header class="header">
+        <div class="logo">
+            <a href="/welcome" id="perfilnav">
+                <h1>Administracion</h1>
+            </a>
+
+        </div>
+        <div class="navigation">
+
+            <input type="checkbox"class="toggle-menu">
+            <div class="hamburger"></div>
+
+            <ul class="menu">
+                
+                <li><a href="/alumnosSesion">Alumnos</a></li>
+                <li><a href="/proyectosSesion">Proyectos</a></li>
+                
+                <div class="mar">
+                <button class="sbutton">
+                    <li><a href="/views/registroProyecto.html">Nuevo Proyecto</a></li>
+                </button>
+                <button class="upbutton">
+                    <li><a href="/logout">Cerrar Sesion</a></li>
+                </button>
+                </div>
+            </ul>
+
+        </div>
+    </header>
+    <h1>Proyectos</h1>
+    <table id="tablaDatos">
+      <thead>
+        <tr>
+
+          <th>ID</th>
+          <th>Titulo</th>
+          <th>Autores</th>
+          <th>Descripcion Corta</th>
+          <th>Descripcion Larga</th>
+          <th>Imagen principal</th>
+          
+        </tr>
+      </thead>
+      <tbody>
+        <% rows.forEach(proyecto => { %>
+          <tr class="fila-dato" onclick="seleccionarFila(this)">
+            <td><%= proyecto.id %></td>
+            <td><%= proyecto.titulo %></td>
+            <td><%= proyecto.autores %></td>
+            <td><%= proyecto.descripcionCorta %></td>
+            <td><%= proyecto.descripcionLarga %></td>
+            <td><img src="<%=proyecto.imagenPrincipal%>" alt=""></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+
+    
+    
+    <div id="botones" style="display: none;">
+
+        <form id="eliminarForm" action="/eliminar" method="POST">
+          <input id="eliminarInput" type="hidden" name="id">
+          <button id="eliminarBtn1" type="submit" onclick="return confirm('¿Estás seguro de que deseas eliminar este estudiante?')">Eliminar</button>
+        </form>
+
+        <div id="formAdmin">
+            <form id="actualizarForm" action="/actualizar" method="POST">
+    
+                <input id="actualizarInput" name="id" type="hidden" class="id">
+    
+                <label for="actualizarNombre">Nombre:</label>
+                <input type="text" name="nombre" id="actualizarNombre">
+    
+                <label for="actualizarCarrera">Carrera:</label>
+                <input type="text" name="carrera" id="actualizarCarrera">
+    
+                <label for="email">Email:</label>
+                <input type="email" name="email" id="email">
+                
+                <label for="actualizarInt">Intereses:</label>
+                <input type="text" name="intereses" id="actualizarInt">
+
+                <label for="actualizarHab">Habilidades:</label>
+                <input type="text" name="habilidades" id="actualizarHab">
+
+                <label for="actualizarObj">Objetivos:</label>
+                <input type="text" name="objetivos" id="actualizarObj">
+    
+                
+                <button id="actualizarBtn" type="submit">Actualizar</button>
+              </form>
+        </div>
+        
+    </div>
+
+    
+      
+
+      <script>
+        let filaSeleccionada = null;
+      
+        function seleccionarFila(fila) {
+          if (filaSeleccionada) {
+            filaSeleccionada.classList.remove('seleccionado');
+          }
+      
+          filaSeleccionada = fila;
+          filaSeleccionada.classList.add('seleccionado');
+      
+          var id = fila.cells[0].textContent;
+
+          var nombre = fila.cells[1].textContent;
+          var carrera = fila.cells[2].textContent;
+          var email = fila.cells[3].textContent;
+          var intereses = fila.cells[4].textContent;
+          var habilidades = fila.cells[5].textContent;
+          var objetivos = fila.cells[6].textContent;
+          
+
+          const eliminarInput = document.getElementById('eliminarInput');
+          eliminarInput.value = id;
+
+          const actualizarInput = document.getElementById('actualizarInput');
+          actualizarInput.value = id;
+
+          
+         const actualizarNombre = document.getElementById('actualizarNombre');
+         actualizarNombre.value = nombre;
+
+         const actualizarCarrera = document.getElementById('actualizarCarrera');
+         actualizarCarrera.value = carrera;
+
+         const actualizarEmail = document.getElementById('email');
+         actualizarEmail.value = email;
+
+         const actualizarInt = document.getElementById('actualizarInt');
+         actualizarInt.value = intereses;
+
+         const actualizarHab = document.getElementById('actualizarHab');
+         actualizarHab.value = habilidades;
+
+         const actualizarObj = document.getElementById('actualizarObj');
+         actualizarObj.value = objetivos;
+
+
+      
+          const botones = document.getElementById('botones');
+          botones.style.display = 'flex';
+
+          
+          
+        }
+      </script>
+
+</body>
+</html>

@@ -95,7 +95,7 @@ const session = require('express-session');
 app.use(session({
     secret: 'abcd1234',
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     cookie: { secure: false } // ajustar según sea necesario
   }));
   
@@ -159,6 +159,125 @@ app.post("/login",(req,res)=>{
 
     })
   })
+
+  //Mostrar alumnos en una sesion
+
+  app.get('/alumnosSesion',(req,res)=>{
+    connection.query('SELECT*FROM estudiantes',(error,rows)=>{
+        if(error) throw error
+        if (!error) {
+
+            res.render('alumnosSesion',{rows})
+
+        }
+
+    })
+  })
+
+  //Mostrar proyectos en una sesion
+
+  app.get('/proyectosSesion',(req,res)=>{
+    
+    res.render('proyectosSesion')
+    
+  })
+
+  //administrar alumnos
+  app.get('/administracionAlumnos',(req,res)=>{
+
+    connection.query('SELECT*FROM estudiantes',(error,rows)=>{
+      if(error)throw error
+      if(!error){
+        res.render('administracionAlumnos',{rows})
+      }
+
+    })
+    
+  })
+
+
+  app.post('/eliminar', (req, res) => {
+
+    const id = req.body.id;
+
+    connection.query('DELETE FROM estudiantes WHERE id=?',[id],
+    (error,results)=>{
+      if(error)throw error
+      if(!error){
+        res.redirect('administracionAlumnos')
+      }
+
+    }
+    
+    )
+
+  });
+
+  app.post('/actualizar', (req, res) => {
+    const id = req.body.id;
+    const nombre = req.body.nombre;
+    const carrera = req.body.carrera;
+    const email = req.body.email;
+    const intereses = req.body.intereses;
+    const habilidades = req.body.habilidades;
+    const objetivos = req.body.objetivos;
+  
+    connection.query('UPDATE estudiantes SET nombre=?, carrera=?, email=?, intereses=?, habilidades=?, objetivos=? WHERE id=?',
+      [nombre, carrera, email, intereses, habilidades, objetivos, id], (error, results) => {
+        if (error) throw error;
+        if (!error) {
+          res.redirect('administracionAlumnos');
+        }
+      }
+    );
+  });
+
+  app.post("/register2", upload.single('file'),(req,res)=>{
+
+    var name = req.body.nombre
+    var career = req.body.carrera
+
+    var image = `public/images/${req.file.filename}`;
+
+    var email = req.body.email
+    var pass = req.body.password
+    var interests = req.body.intereses
+    var skills = req.body.habilidades
+    var objectives = req.body.objetivos
+
+    var sql = 'INSERT INTO estudiantes (nombre, carrera, imagen,email,password,intereses,habilidades,objetivos) VALUES(?,?,?,?,?,?,?,?)';
+
+    connection.query(sql,[name,career,image,email,pass,interests,skills,objectives],function(err,results){
+        if(err)throw err
+        if(!err){
+          res.redirect('administracionAlumnos')
+        }
+    })
+
+    
+
+})
+
+
+  //administrar proyectos
+
+  app.get('/administracionProyectos',(req,res)=>{
+
+    connection.query('SELECT*FROM proyectos',(err,rows)=>{
+
+      if(err)throw err
+
+      if(!err){
+
+        res.render('administracionProyectos',{rows})
+      }
+    })
+
+
+    
+  })
+
+
 
   //Mostrar proyectos sin sesion
 

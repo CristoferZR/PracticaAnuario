@@ -7,11 +7,7 @@
     
 }
 body{
-    background-image: url("https://images.unsplash.com/photo-1599725427295-6ed79ff8dbef?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80");
     background-size: cover;
-
-
-
 
 }
 
@@ -238,6 +234,8 @@ section div {
     height: 84.5vh;
     padding-right: 330px;
     padding-left: 330px;
+    display: flex;
+    flex-direction: column;
     
 
 }
@@ -245,7 +243,7 @@ section div {
 h1 {
 
     text-align: center;
-    color: white;
+    color: rgb(0, 0, 0);
 
 }
 
@@ -327,7 +325,7 @@ input[type="submit"]:hover {
   }
 
   #imgperfil{
-    width: 7vw;
+    width: 20vw;
     
     
   }
@@ -360,6 +358,7 @@ input[type="submit"]:hover {
 .contenido{
     display: flex;
     flex-direction: column;
+    
 }
 .card:hover{
     box-shadow: 5px 5px 20px rgba(0,0,0,0.4);
@@ -394,7 +393,239 @@ input[type="submit"]:hover {
 .card .contenido a:hover{
     background: #2fb4cc;
     color:#fff;
-}   
+}  
+.slider {
+    width: 100%;
+    max-width: 100vw;
+    margin: 0 auto;
+    position: relative;
+  }
+  
+  .slides {
+    width: 100%;
+    height: 81vh;
+    overflow: hidden;
+  }
+  
+  .slide {
+    width: 100%;
+    height: 100%;
+    display: none;
+  }
+  
+  .slide img {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .slide-text {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    color: #fff;
+  }
+  
+  .slide-text h2 {
+    margin: 0;
+    font-size: 24px;
+  }
+  
+  .slide-text p {
+    margin: 10px 0 0;
+  }
+  
+  .controls {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1;
+  }
+  
+  .prev-btn,
+  .next-btn {
+    font-size: 24px;
+    background: none;
+    border: none;
+    color: #ffffff;
+    padding: 0 10px;
+    cursor: pointer;
+  }
+  
+  .prev-btn {
+    margin-left: 20px;
+  }
+  
+  .next-btn {
+    margin-right: 20px;
+  }
+  #arrow-space{
+    background-color: #000000;
+    height: 8vh;
+  }
+  
+  .flecha {
+    display: block;
+    text-align: center;
+    font-size: 24px;
+    color: #ffffff;
+    
+    text-decoration: none;
+    animation: animacion-flecha 0.5s infinite alternate;
+  }
+  
+  @keyframes animacion-flecha {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(10px);
+    }
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+  #destino{
+    margin: 5px;
+    display: flex;
+    
+  }
+  #descripcion-proyecto{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+
+  }
+
+  #button-proyecto{
+    margin-top: 150px;
+
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    max-width: 95vw;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #000000;
+}
+
+#info-user{
+  display: flex;
+  flex-direction: column;
+  
+}
+
+#info-user p{
+  font-size: 20px;
+  color: #0062cc;
+  
+}
+
+#button-user{
+  display: flex;
+  flex-direction: column;
+}
+
+.miBoton {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 8vh;
+  margin-bottom: 8vh;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: transform 0.3s; /* Transición de animación */
+}
+
+.miBoton:hover {
+  transform: scale(1.1); /* Escala el botón al pasar el cursor por encima */
+}
+
+#tablaDatos {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#tablaDatos th,
+#tablaDatos td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Estilos para los botones */
+#botones{
+  display: flex;
+  flex-direction: column;
+
+}
+
+#eliminarBtn1{
+  background-color: #ff0000;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: transform 0.3s;
+}
+
+
+#eliminarBtn1:hover {
+  transform: scale(1.1); /* Escala el botón al pasar el cursor por encima */
+}
+
+
+.fila-dato:hover {
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+.seleccionado {
+  background-color: #ddd;
+}
+
+#actualizarForm{
+  display: flex;
+  flex-direction: column;
+  
+}
+#actualizarBtn{
+  background-color: #0004ff;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: transform 0.3s;
+  margin-bottom: 20px;
+  margin-left: 10px;
+
+}
+#actualizarBtn:hover {
+  transform: scale(1.1); /* Escala el botón al pasar el cursor por encima */
+}
+
+
+
 
 
 /*********************************************************/
