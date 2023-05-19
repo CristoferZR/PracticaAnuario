@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/public/styles.css">
+    <title>Anuario</title>
+</head>
+
+<body>
+    <header class="header">
+        <div class="logo">
+            <a href="/welcome" id="perfilnav">
+                <h1>Administracion</h1>
+            </a>
+
+        </div>
+        <div class="navigation">
+
+            <input type="checkbox"class="toggle-menu">
+            <div class="hamburger"></div>
+
+            <ul class="menu">
+                <li><a href="/welcome">Inicio</a></li>
+                <li><a href="/alumnosSesion">Alumnos</a></li>
+                <li><a href="/proyectosSesion">Proyectos</a></li>
+                
+                <div class="mar">
+                <button class="upbutton">
+                    <li><a href="/logout">Cerrar Sesion</a></li>
+                </button>
+                </div>
+            </ul>
+
+        </div>
+    </header>
+
+    <section>
+
+        <form action="/proyectos" method="POST" enctype="multipart/form-data" id="form-proyectos">
+            <label for="titulo">Título del proyecto:</label>
+            <input type="text" name="titulo" id="titulo" required>
+          
+            <label for="autores">Autores Disponibles:</label>
+            <select name="autores[]" id="autores" multiple >
+            <!-- Aquí puedes generar las opciones dinámicamente desde la tabla de autores -->
+            <% rows.forEach(estudiantes =>{%>
+            
+                <option value="<%=estudiantes.nombre%>"><%=estudiantes.nombre%></option>
+
+            <%})%>
+            </select>
+            
+            <label id="labelautores" for="autor">Autores Seleccionados:</label>
+            <div style="color: red;" id="autores-seleccionados"></div>
+          
+            <label for="descripcion_corta">Descripción corta:</label>
+            <textarea name="descripcion_corta" id="descripcion_corta" required></textarea>
+          
+            <label for="descripcion_larga">Descripción larga:</label>
+            <textarea name="descripcion_larga" id="descripcion_larga" required></textarea>
+          
+            <label for="imagen_principal">Subir imagen principal:</label>
+            <label for="file" class="custom-file-upload"><i class="fas fa-cloud-upload-alt"></i> Subir imagen</label>
+            <input type="file" name="file" id="file" >
+
+            <div id="imagen-principal-preview"></div> <!-- Contenedor para mostrar la imagen principal cargada -->
+
+            <label for="imagen_adicional">Imágen adicional:</label>
+            <label for="files" class="custom-file-upload"><i class="fas fa-cloud-upload-alt"></i> Subir imagen</label>
+            <input type="file" name="files" id="files" class="custom-file-upload" multiple>
+            
+
+            <div id="imagenes-adicionales-preview"></div>
+          
+            <button type="submit">Enviar</button>
+          </form>
+
+    </section>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#autores').change(function() {
+        var autoresSeleccionados = $('#autores').val();
+        var autoresMostrados = autoresSeleccionados.join(', ');
+        $('#autores-seleccionados').text(autoresMostrados);
+    });
+});
+
+$(document).ready(function() {
+  // Manejar cambios en el campo de imagen principal
+  $('#file').change(function(e) {
+    var file = e.target.files[0];
+    var reader = new FileReader();
+
+    reader.onload = function(e) {
+      $('#imagen-principal-preview').html('<img src="' + e.target.result + '" alt="Imagen Principal">');
+    }
+
+    reader.readAsDataURL(file);
+  });
+
+  // Manejar cambios en el campo de imágenes adicionales
+  $('#files').change(function(e) {
+    var files = e.target.files;
+
+    for (var i = 0; i < files.length; i++) {
+      var file = files[i];
+      var reader = new FileReader();
+
+      reader.onload = function(e) {
+        var image = $('<img>').attr('src', e.target.result);
+        $('#imagenes-adicionales-preview').append(image);
+      }
+
+      reader.readAsDataURL(file);
+    }
+  });
+});
+
+</script>
+
+</body>
+</html>

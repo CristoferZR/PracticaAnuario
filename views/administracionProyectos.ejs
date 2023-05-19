@@ -28,7 +28,7 @@
                 
                 <div class="mar">
                 <button class="sbutton">
-                    <li><a href="/views/registroProyecto.html">Nuevo Proyecto</a></li>
+                    <li><a href="/registroProyecto">Nuevo Proyecto</a></li>
                 </button>
                 <button class="upbutton">
                     <li><a href="/logout">Cerrar Sesion</a></li>
@@ -48,20 +48,21 @@
           <th>Autores</th>
           <th>Descripcion Corta</th>
           <th>Descripcion Larga</th>
-          <th>Imagen principal</th>
           
         </tr>
       </thead>
       <tbody>
-        <% rows.forEach(proyecto => { %>
+        <% data.proyectos.forEach(proyecto => { %>
           <tr class="fila-dato" onclick="seleccionarFila(this)">
             <td><%= proyecto.id %></td>
             <td><%= proyecto.titulo %></td>
             <td><%= proyecto.autores %></td>
-            <td><%= proyecto.descripcionCorta %></td>
-            <td><%= proyecto.descripcionLarga %></td>
-            <td><img src="<%=proyecto.imagenPrincipal%>" alt=""></td>
+            <td rowspan="2"><%= proyecto.descripcionCorta %></td>
+            <td rowspan="2"><%= proyecto.descripcionLarga %></td>
           </tr>
+          <tr>
+            
+        </tr>
         <% }) %>
       </tbody>
     </table>
@@ -70,33 +71,37 @@
     
     <div id="botones" style="display: none;">
 
-        <form id="eliminarForm" action="/eliminar" method="POST">
+        <form id="eliminarForm" action="/eliminarpro" method="POST">
           <input id="eliminarInput" type="hidden" name="id">
-          <button id="eliminarBtn1" type="submit" onclick="return confirm('¿Estás seguro de que deseas eliminar este estudiante?')">Eliminar</button>
+          <button id="eliminarBtn1" type="submit" onclick="return confirm('¿Estás seguro de que deseas eliminar este proyecto?')">Eliminar</button>
         </form>
 
         <div id="formAdmin">
-            <form id="actualizarForm" action="/actualizar" method="POST">
+            <form id="form-proyectos" action="/actualizarpro" method="POST">
     
                 <input id="actualizarInput" name="id" type="hidden" class="id">
     
-                <label for="actualizarNombre">Nombre:</label>
-                <input type="text" name="nombre" id="actualizarNombre">
-    
-                <label for="actualizarCarrera">Carrera:</label>
-                <input type="text" name="carrera" id="actualizarCarrera">
-    
-                <label for="email">Email:</label>
-                <input type="email" name="email" id="email">
-                
-                <label for="actualizarInt">Intereses:</label>
-                <input type="text" name="intereses" id="actualizarInt">
+                <label for="actualizarNombre">Titulo:</label>
+                <input type="text" name="titulo" id="actualizarNombre">
 
-                <label for="actualizarHab">Habilidades:</label>
-                <input type="text" name="habilidades" id="actualizarHab">
+                <label for="autores">Autores:</label>
+                <select name="autores[]" id="autores" multiple onchange="mostrarAutoresSeleccionados()">
+                <!-- Aquí puedes generar las opciones dinámicamente desde la tabla de autores -->
+                <% data.estudiantes.forEach(estudiante =>{%>
+            
+                   <option value="<%=estudiante.nombre%>"><%=estudiante.nombre%></option>
 
-                <label for="actualizarObj">Objetivos:</label>
-                <input type="text" name="objetivos" id="actualizarObj">
+                <%})%>
+                </select>
+
+                <label id="labelautores" for="autor">Autores Seleccionados:</label>
+                <div style="color: red;" id="autores-seleccionados"></div>
+    
+                <label for="descripcion_corta">Descripcion corta:</label>
+                <textarea name="descripcion_corta" id="descripcion_corta"></textarea>
+
+                <label for="descripcion_larga">Descripción larga:</label>
+                <textarea name="descripcion_larga" id="descripcion_larga" required></textarea>
     
                 
                 <button id="actualizarBtn" type="submit">Actualizar</button>
@@ -107,62 +112,64 @@
 
     
       
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
       <script>
+        
         let filaSeleccionada = null;
-      
-        function seleccionarFila(fila) {
-          if (filaSeleccionada) {
-            filaSeleccionada.classList.remove('seleccionado');
-          }
-      
-          filaSeleccionada = fila;
-          filaSeleccionada.classList.add('seleccionado');
-      
-          var id = fila.cells[0].textContent;
 
-          var nombre = fila.cells[1].textContent;
-          var carrera = fila.cells[2].textContent;
-          var email = fila.cells[3].textContent;
-          var intereses = fila.cells[4].textContent;
-          var habilidades = fila.cells[5].textContent;
-          var objetivos = fila.cells[6].textContent;
-          
-
-          const eliminarInput = document.getElementById('eliminarInput');
-          eliminarInput.value = id;
-
-          const actualizarInput = document.getElementById('actualizarInput');
-          actualizarInput.value = id;
-
-          
-         const actualizarNombre = document.getElementById('actualizarNombre');
-         actualizarNombre.value = nombre;
-
-         const actualizarCarrera = document.getElementById('actualizarCarrera');
-         actualizarCarrera.value = carrera;
-
-         const actualizarEmail = document.getElementById('email');
-         actualizarEmail.value = email;
-
-         const actualizarInt = document.getElementById('actualizarInt');
-         actualizarInt.value = intereses;
-
-         const actualizarHab = document.getElementById('actualizarHab');
-         actualizarHab.value = habilidades;
-
-         const actualizarObj = document.getElementById('actualizarObj');
-         actualizarObj.value = objetivos;
-
-
-      
-          const botones = document.getElementById('botones');
-          botones.style.display = 'flex';
-
-          
-          
+        function mostrarAutoresSeleccionados() {
+            var autoresSeleccionados = Array.from(document.querySelectorAll('#autores option:checked'))
+                .map(option => option.value);
+            var autoresMostrados = autoresSeleccionados.join(', ');
+            document.getElementById('autores-seleccionados').textContent = autoresMostrados;
         }
-      </script>
+
+        function seleccionarFila(fila) {
+            if (filaSeleccionada) {
+                filaSeleccionada.classList.remove('seleccionado');
+            }
+
+            filaSeleccionada = fila;
+            filaSeleccionada.classList.add('seleccionado');
+
+            var id = fila.cells[0].textContent;
+            var nombre = fila.cells[1].textContent;
+            var autores = fila.cells[2].textContent;
+            var descorta = fila.cells[3].textContent;
+            var deslarga = fila.cells[4].textContent;
+
+            const eliminarInput = document.getElementById('eliminarInput');
+            eliminarInput.value = id;
+
+            const actualizarInput = document.getElementById('actualizarInput');
+            actualizarInput.value = id;
+
+            const actualizarNombre = document.getElementById('actualizarNombre');
+            actualizarNombre.value = nombre;
+
+            const actualizarAutores = document.getElementById('autores');
+            const autoresSeleccionados = autores.split(', ');
+            for (let i = 0; i < actualizarAutores.options.length; i++) {
+                if (autoresSeleccionados.includes(actualizarAutores.options[i].value)) {
+                    actualizarAutores.options[i].selected = true;
+                } else {
+                    actualizarAutores.options[i].selected = false;
+                }
+            }
+
+            // Mostrar autores seleccionados en el div
+            mostrarAutoresSeleccionados();
+
+            const descripcion_corta = document.getElementById('descripcion_corta');
+            descripcion_corta.value = descorta;
+
+            const descripcion_larga = document.getElementById('descripcion_larga');
+            descripcion_larga.value = deslarga;
+
+            const botones = document.getElementById('botones');
+            botones.style.display = 'flex';
+        }
+    </script>
 
 </body>
 </html>

@@ -624,6 +624,105 @@ input[type="submit"]:hover {
   transform: scale(1.1); /* Escala el botón al pasar el cursor por encima */
 }
 
+#form-proyectos{
+  display: flex;
+  flex-direction: column;
+  max-width: 95vw;
+  margin: 0 auto;
+}
+
+input[type="text"]{
+  width: 90%;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+#descripcion_corta{
+  width: 50vw;
+  height: 10vh;
+}
+
+#descripcion_larga{
+  width: 90vw;
+  height: 20vh;
+}
+
+#autores{
+  width: 60vw;
+}
+
+#imagen-principal-preview img,
+#imagenes-adicionales-preview img {
+  max-width: 200px;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+#imagenes-adicionales-preview{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+
+button[type="submit"] {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #45a049;
+}
+
+#labelautores{
+
+  color:#0004ff
+}
+
+#tablaDatos td:nth-child(4),
+#tablaDatos td:nth-child(5) {
+  white-space: normal;
+  word-break: break-word;
+}
+
+#tablaDatos th:first-child,
+#tablaDatos td:first-child {
+  width: 50px;
+}
+
+#tablaDatos th:nth-child(2),
+#tablaDatos td:nth-child(2),
+#tablaDatos th:nth-child(3),
+#tablaDatos td:nth-child(3) {
+  width: 150px;
+}
+
+
+/* Estilos para la tabla */
+#tablaDatos {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#tablaDatos th,
+#tablaDatos td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+#tablaDatos th {
+  background-color: #f2f2f2;
+}
+
+/* Estilos para la fila seleccionada */
+.fila-dato.seleccionado {
+  background-color: #eaf6ff;
+}
+
 
 
 

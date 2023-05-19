@@ -2,7 +2,7 @@ const express = require('express')
 const mysql  = require('mysql2');
 const app = express()
 const ejs = require('ejs')
-const multer = require("multer");
+const multer = require('multer');
 const bodyParser = require('body-parser');
 
 app.use(express.json());
@@ -41,6 +41,8 @@ connection.connect((error) => {
 
 app.listen(PORT);
 
+
+
 const router = express.Router();
 
   app.set('view engine','ejs');
@@ -59,7 +61,8 @@ var upload = multer({
             return cb(new Error('Solo se permiten archivos JPG'));
         }
         cb(null, true);
-    }// fin del fileFilter
+    },
+    // fin del fileFilter
 })// fin del multer
 
 
@@ -248,10 +251,12 @@ app.post("/login",(req,res)=>{
     var sql = 'INSERT INTO estudiantes (nombre, carrera, imagen,email,password,intereses,habilidades,objetivos) VALUES(?,?,?,?,?,?,?,?)';
 
     connection.query(sql,[name,career,image,email,pass,interests,skills,objectives],function(err,results){
-        if(err)throw err
+        
+      if(err)throw err
         if(!err){
           res.redirect('administracionAlumnos')
         }
+
     })
 
     
@@ -261,28 +266,117 @@ app.post("/login",(req,res)=>{
 
   //administrar proyectos
 
-  app.get('/administracionProyectos',(req,res)=>{
-
-    connection.query('SELECT*FROM proyectos',(err,rows)=>{
-
-      if(err)throw err
-
-      if(!err){
-
-        res.render('administracionProyectos',{rows})
-      }
-    })
-
-
-    
-  })
+  app.get('/administracionProyectos', (req, res) => {
+    const proyectoQuery = 'SELECT * FROM proyectos';
+    const estudiantesQuery = 'SELECT * FROM estudiantes';
+  
+    connection.query(proyectoQuery, (errProyectos, proyectos) => {
+      if (errProyectos) throw errProyectos;
+  
+      connection.query(estudiantesQuery, (errEstudiantes, estudiantes) => {
+        if (errEstudiantes) throw errEstudiantes;
+  
+        const data = {
+          proyectos: proyectos,
+          estudiantes: estudiantes
+        };
+  
+        res.render('administracionProyectos', { data });
+      });
+    });
+  });
 
 
 
   //Mostrar proyectos sin sesion
 
   app.get('/proyectos',(req,res)=>{
-    
-    res.render('proyectos')
+
+    connection.query('SELECT*FROM proyectos',(error,rows)=>{
+      if(error)throw error
+      if(!error){
+        res.render('proyectos',{rows})
+      }
+
+    })
     
   })
+
+
+  //Registro proyecto
+
+  app.get('/registroProyecto',(req,res)=>{
+
+    connection.query('SELECT*FROM estudiantes',(error,rows)=>{
+
+      if(error)throw error
+      if(!error){
+        res.render('registroProyecto',{rows})
+      }
+
+    })
+
+  })
+  
+  app.post('/proyectos', upload.fields([{ name: 'file', maxCount: 1 }, { name: 'files', maxCount: 2 }]), (req, res) => {
+    // Extraer los datos del archivo principal
+    const titulo = req.body.titulo;
+    const autores = Array.isArray(req.body.autores) ? req.body.autores.join(', ') : req.body.autores;
+    const descripcion_corta = req.body.descripcion_corta;
+    const descripcion_larga = req.body.descripcion_larga;
+    const image = `public/images/${req.files['file'][0].filename}`;
+  
+    // Extraer los datos de la imagen adicional
+    let image2 = '';
+    if (req.files['files']) {
+      image2 = `public/images/${req.files['files'][0].filename}`;
+    }
+  
+    // Insertar los datos en la base de datos
+    connection.query(
+      'INSERT INTO proyectos (titulo, autores, descripcionCorta, descripcionLarga, imagenPrincipal, imagenesAdicionales) VALUES (?, ?, ?, ?, ?, ?)',
+      [titulo, autores, descripcion_corta, descripcion_larga, image, image2],
+      (error, results) => {
+        if (error) throw error;
+        if (!error) {
+          res.redirect('administracionProyectos');
+        }
+      }
+    );
+  });
+
+  app.post('/eliminarpro', (req, res) => {
+
+    const id = req.body.id;
+
+    connection.query('DELETE FROM proyectos WHERE id=?',[id],
+    (error,results)=>{
+      if(error)throw error
+      if(!error){
+        res.redirect('administracionProyectos')
+      }
+
+    }
+    
+    )
+
+  });
+
+
+  app.post('/actualizarpro', (req, res) => {
+    const id = req.body.id;
+    const titulo = req.body.titulo;
+    const autores = Array.isArray(req.body.autores) ? req.body.autores.join(', ') : req.body.autores;
+    const descripcion_corta = req.body.descripcion_corta;
+    const descripcion_larga = req.body.descripcion_larga;
+    
+  
+    connection.query('UPDATE proyectos SET titulo=?, autores=?, descripcionCorta=?, descripcionLarga=? WHERE id=?',
+      [titulo, autores, descripcion_corta, descripcion_larga, id], (error, results) => {
+        if (error) throw error;
+        if (!error) {
+          res.redirect('administracionProyectos');
+        }
+      }
+    );
+  });
