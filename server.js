@@ -70,24 +70,41 @@ var upload = multer({
 
 app.post("/register", upload.single('file'),(req,res)=>{
 
-    var name = req.body.nombre
-    var career = req.body.carrera
+    const name = req.body.nombre
+    const career = req.body.carrera
 
-    var image = `public/images/${req.file.filename}`;
+    const image = `public/images/${req.file.filename}`
 
-    var email = req.body.email
-    var pass = req.body.password
-    var interests = req.body.intereses
-    var skills = req.body.habilidades
-    var objectives = req.body.objetivos
+    const email = req.body.email
+    const pass = req.body.password
+    const interests = req.body.intereses
+    const skills = req.body.habilidades
+    const objectives = req.body.objetivos
+    const control = req.body.numero
 
-    var sql = 'INSERT INTO estudiantes (nombre, carrera, imagen,email,password,intereses,habilidades,objetivos) VALUES(?,?,?,?,?,?,?,?)';
+    const sql = 'INSERT INTO estudiantes (nombre, carrera, imagen,email,password,intereses,habilidades,objetivos,no_control) VALUES(?,?,?,?,?,?,?,?,?)';
 
-    connection.query(sql,[name,career,image,email,pass,interests,skills,objectives],function(err,res){
+    connection.query(sql,[name,career,image,email,pass,interests,skills,objectives,control],function(err,res){
         if(err)throw err
     })
 
     res.redirect('/index.html')
+
+})
+
+app.post('/register3',upload.single('file'),(req,res)=>{
+
+  const nombre = req.body.nombre
+  const email = req.body.email
+  const pass = req.body.password
+  const image = `public/images/${req.file.filename}`
+
+  const sql = 'INSERT INTO administradores(email,password,imagen,nombre) values(?,?,?,?)'
+
+  connection.query(sql,[email,pass,image,nombre],(error,results)=>{
+    if(error)throw error
+  })
+  res.redirect('welcome')
 
 })
 
@@ -108,7 +125,7 @@ app.post("/login",(req,res)=>{
     const email = req.body.email;
     const pass = req.body.password;
 
-    connection.query('SELECT * FROM estudiantes where email = ? AND password=?',
+    connection.query('SELECT * FROM administradores where email = ? AND password=?',
     [email,pass],
     (error,results) =>{
         if (error){
@@ -119,9 +136,21 @@ app.post("/login",(req,res)=>{
             req.session.user = results[0];
             res.redirect('/welcome');
         }else{
-            res.send('Credenciales incorrectas');
+          connection.query('SELECT * FROM estudiantes where email=? AND password=?',[email,pass],(error,results)=>{
+            if(error){
+              console.log(error)
+              res.send('Ocurrió un error al intentar iniciar sesión');
+            }
+            else if(results.length>0){
+              req.session.loggedin = true;
+              req.session.user = results[0];
+              res.redirect('/welcomeEstudiante');
+            }else{
+              res.send('Credenciales incorrectas');
+            }
+          })
+          
         }
-
     }
     
     )
@@ -133,6 +162,48 @@ app.post("/login",(req,res)=>{
     res.render('welcome', { user});
   });
 
+  app.get('/welcomeEstudiante', (req, res) => {
+    const user = req.session.user;
+
+    res.render('welcomeEstudiante', { user});
+  });
+
+  app.get('/modificarEstudiante',(req,res)=>{
+
+    const user = req.session.user;
+
+    res.render('modificarEstudiante',{user})
+  })
+
+  app.post('/modificarEst',upload.single('file'),(req,res)=>{
+
+    const control = req.body.id
+    const nombre = req.body.nombre
+    const carrera = req.body.carrera
+    const email = req.body.email
+    const intereses = req.body.intereses
+    const habilidades = req.body.habilidades
+    const objetivos = req.body.objetivos
+
+    let imagen;
+  if (req.file) {
+    // Se ha seleccionado un nuevo archivo
+    imagen = `public/images/${req.file.filename}`;
+  } else {
+    // No se ha seleccionado un archivo nuevo, mantener la misma imagen
+    imagen = req.body.current_image;
+  }
+
+    connection.query('UPDATE estudiantes SET nombre=?, carrera=?, imagen=?, email=?, intereses=?, habilidades=?, objetivos=? WHERE no_control=?',
+      [nombre, carrera,imagen, email, intereses, habilidades, objetivos, control], (error, results) => {
+        if (error) throw error;
+        if (!error) {
+          res.redirect('welcomeEstudiante');
+        }
+      }
+    );
+
+  })
 
 
   //Cerrar sesion
@@ -180,9 +251,35 @@ app.post("/login",(req,res)=>{
   //Mostrar proyectos en una sesion
 
   app.get('/proyectosSesion',(req,res)=>{
+
+    connection.query('SELECT*FROM proyectos',(error,rows)=>{
+
+      if(error) throw error
+      if(!error){
+        res.render('proyectosSesion',{rows})
+      }
+
+    })
     
-    res.render('proyectosSesion')
-    
+  })
+
+  //Detalle proyecto en una sesion
+
+  app.get('/detalle-proyecto',(req,res)=>{
+
+    const id = req.query.id
+
+    connection.query('SELECT*FROM proyectos where id=?',[id],(error,results)=>{
+
+        if(error)throw error
+        if(!error){
+          res.render('detalle-proyecto',{results})
+        }
+
+
+    })
+
+
   })
 
   //administrar alumnos
@@ -198,12 +295,48 @@ app.post("/login",(req,res)=>{
     
   })
 
+  //Detalle alumno en una sesion
+
+  app.get('/detalle-alumno',(req,res)=>{
+
+    const id = req.query.id
+
+    connection.query('SELECT*FROM estudiantes where no_control=?',[id],(error,results)=>{
+
+      if(error)throw error
+      if(!error){
+
+        res.render('detalle-alumno',{results})
+      }
+
+    })
+
+  })
+
+  //Detalle alumno sin sesion
+
+  app.get('/detalle-alumno-nosesion',(req,res)=>{
+
+    const id = req.query.id
+
+    connection.query('SELECT*FROM estudiantes where no_control=?',[id],(error,results)=>{
+
+      if(error)throw error
+      if(!error){
+
+        res.render('detalle-alumno-nosesion',{results})
+      }
+
+    })
+
+  })
+
 
   app.post('/eliminar', (req, res) => {
 
     const id = req.body.id;
 
-    connection.query('DELETE FROM estudiantes WHERE id=?',[id],
+    connection.query('DELETE FROM estudiantes WHERE no_control=?',[id],
     (error,results)=>{
       if(error)throw error
       if(!error){
@@ -225,7 +358,7 @@ app.post("/login",(req,res)=>{
     const habilidades = req.body.habilidades;
     const objetivos = req.body.objetivos;
   
-    connection.query('UPDATE estudiantes SET nombre=?, carrera=?, email=?, intereses=?, habilidades=?, objetivos=? WHERE id=?',
+    connection.query('UPDATE estudiantes SET nombre=?, carrera=?, email=?, intereses=?, habilidades=?, objetivos=? WHERE no_control=?',
       [nombre, carrera, email, intereses, habilidades, objetivos, id], (error, results) => {
         if (error) throw error;
         if (!error) {
@@ -247,10 +380,11 @@ app.post("/login",(req,res)=>{
     var interests = req.body.intereses
     var skills = req.body.habilidades
     var objectives = req.body.objetivos
+    var control = req.body.numero
 
-    var sql = 'INSERT INTO estudiantes (nombre, carrera, imagen,email,password,intereses,habilidades,objetivos) VALUES(?,?,?,?,?,?,?,?)';
+    var sql = 'INSERT INTO estudiantes (nombre, carrera, imagen,email,password,intereses,habilidades,objetivos,no_control) VALUES(?,?,?,?,?,?,?,?,?)';
 
-    connection.query(sql,[name,career,image,email,pass,interests,skills,objectives],function(err,results){
+    connection.query(sql,[name,career,image,email,pass,interests,skills,objectives,control],function(err,results){
         
       if(err)throw err
         if(!err){
@@ -302,6 +436,23 @@ app.post("/login",(req,res)=>{
     
   })
 
+  //Detalle proyecto sin sesion
+
+  app.get('/detalle-proyecto-nosesion',(req,res)=>{
+
+    const id = req.query.id
+
+    connection.query('SELECT*FROM proyectos where id=?',[id],(error,results)=>{
+
+        if(error)throw error
+        if(!error){
+          res.render('detalle-proyecto-nosesion',{results})
+        }
+
+
+    })
+
+  })
 
   //Registro proyecto
 
@@ -317,6 +468,8 @@ app.post("/login",(req,res)=>{
     })
 
   })
+
+
   
   app.post('/proyectos', upload.fields([{ name: 'file', maxCount: 1 }, { name: 'files', maxCount: 2 }]), (req, res) => {
     // Extraer los datos del archivo principal
@@ -379,4 +532,39 @@ app.post("/login",(req,res)=>{
         }
       }
     );
+  });
+
+
+  app.post('/buscar', (req, res) => {
+    const busqueda = req.body.searchInput;
+  
+    connection.query('SELECT * FROM estudiantes WHERE no_control = ?', [busqueda], (err, results) => {
+      if (err) {
+        console.error('Error al ejecutar la consulta:', err);
+        res.send('<script>alert("Error al ejecutar la consulta"); window.history.back();</script>');
+      } else {
+        if (results.length === 0) {
+          res.send('<script>alert("No se encontraron registros"); window.history.back();</script>');
+        } else {
+          res.render('detalle-alumno-nosesion', { results });
+        }
+      }
+    });
+  });
+
+  app.post('/buscar2', (req, res) => {
+    const busqueda = req.body.searchInput;
+  
+    connection.query('SELECT * FROM estudiantes WHERE no_control = ?', [busqueda], (err, results) => {
+      if (err) {
+        console.error('Error al ejecutar la consulta:', err);
+        res.send('<script>alert("Error al ejecutar la consulta"); window.history.back();</script>');
+      } else {
+        if (results.length === 0) {
+          res.send('<script>alert("No se encontraron registros"); window.history.back();</script>');
+        } else {
+          res.render('detalle-alumno', { results });
+        }
+      }
+    });
   });

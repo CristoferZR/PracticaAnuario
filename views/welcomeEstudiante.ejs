@@ -12,7 +12,7 @@
     <header class="header">
         <div class="logo">
             <a href="#" id="perfilnav">
-                <h1>Bienvenido Admin</h1>
+                <h1>Bienvenido <%= user.nombre %></h1>
             </a>
 
         </div>
@@ -22,12 +22,13 @@
             <div class="hamburger"></div>
 
             <ul class="menu">
-                <li><a href="/welcome">Inicio</a></li>
-                <li><a href="/alumnosSesion">Alumnos</a></li>
-                <li><a href="/proyectosSesion">Proyectos</a></li>
-                
                 <div class="mar">
+                <button class="inbutton">
+                    
+                        <li><a href="/modificarEstudiante">Modificar</a></li>
+                </button>
                 <button class="upbutton">
+                    
                     <li><a href="/logout">Cerrar Sesion</a></li>
                 </button>
                 </div>
@@ -35,24 +36,27 @@
 
         </div>
     </header>
-
+    
     <section>
         
         <div class="content">
-            <h2>Usuario Administrador</h2>
+            <h2>Estudiante</h2>
             <div id="user-info">
 
                 <img src="<%=user.imagen%>" alt="" srcset="">
                 <div id="info-user">
                     <h1>Nombre</h1>
                     <p><%=user.nombre%></p>
+                    <h1>Carrera</h1>
+                    <p><%=user.carrera%></p>
                     <h1>Email</h1>
                     <p><%=user.email%></p>
-                </div>
-                <div id="button-user">
-                    <a href="/administracionAlumnos" class="miBoton">Administrar Alumnos</a>
-                    <a href="/administracionProyectos" class="miBoton">Administrar Proyectos</a>
-                    <a href="/views/registrarAdmin.html" class="miBoton">Nuevo admin</a>
+                    <h1>Intereses</h1>
+                    <p><%=user.intereses%></p>
+                    <h1>Habilidades</h1>
+                    <p><%=user.habilidades%></p>
+                    <h1>Objetivos</h1>
+                    <p><%=user.objetivos%></p>
 
                 </div>
             </div>

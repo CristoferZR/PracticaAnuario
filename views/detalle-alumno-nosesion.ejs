@@ -37,20 +37,34 @@
         </div>
     </header>
 
-    <div id="index">
-        <div class="image-container">
-            <img src="/public/images/img2.jpg" alt="Imagen">
-            <div class="overlay-text">
-                <h2>Bienvenido al anuario </h2>
-                <p>Puedes ver los alumnos y proyectos actuales</p>
+    
+    <section>
+        <h1>Detalles del alumno</h1>
 
-                <a href="/views/registro.html" class="button">Registrarse</a>
-                
+        <div id="detallealu">
+
+            <div>
+                <img src="<%= results[0].imagen%>" alt="" srcset="">
             </div>
-        </div>
-    </div>
 
+            <div id="detalle-alu-nombre">
+                <h2>Nombre</h2>
+                <p><%= results[0].nombre%></p>
+                <h2>Carrera</h2>
+                <p><%= results[0].carrera%></p>
+                <h2>Email</h2>
+                <p><%= results[0].email%></p>
+                <h2>Intereses</h2>
+                <p><%= results[0].intereses%></p>
+                <h2>Habilidades</h2>
+                <p><%= results[0].habilidades%></p>
+                <h2>Objetivos</h2>
+                <p><%= results[0].objetivos%></p>
+            </div>
         
+        </div>
+
+    </section>
 
 </body>
 </html>

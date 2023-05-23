@@ -40,64 +40,41 @@
     
 
     <div class="slider">
-
         <div class="slides">
-          <div class="slide">
-            <img src="/public/images/25c1a520169aea5d34ef46ee4138711f" alt="Imagen 1">
-            <div class="slide-text">
-              <h2>Título de la imagen 1</h2>
-              <p>Descripción de la imagen 1</p>
+            <%rows.forEach(proyectos => {%>
+            <div class="slide">
+                <img src="<%= proyectos.imagenPrincipal %>" alt="Imagen 1">
+                <div class="slide-text">
+                    <h2><%= proyectos.titulo %></h2>
+                    <p><%= proyectos.descripcionCorta %></p>
+                </div>
             </div>
-          </div>
-          <div class="slide">
-            <img src="/public/images/a43d039e475f0aedd6989bbbc1d1f2a4" alt="Imagen 2">
-            <div class="slide-text">
-              <h2>Título de la imagen 2</h2>
-              <p>Descripción de la imagen 2</p>
-            </div>
-          </div>
-          <div class="slide">
-            <img src="/public/images/25c1a520169aea5d34ef46ee4138711f" alt="Imagen 3">
-            <div class="slide-text">
-              <h2>Título de la imagen 3</h2>
-              <p>Descripción de la imagen 3</p>
-            </div>
-          </div>
+            <%  }) %>
         </div>
         <div class="controls">
-          <button class="prev-btn">&lt;</button>
-          <button class="next-btn">&gt;</button>
+            <button class="prev-btn">&lt;</button>
+            <button class="next-btn">&gt;</button>
         </div>
-      </div>
+    </div>
 
     <div id="arrow-space">
-      <a href="#destino" class="flecha" onclick="smoothScroll(event)">
-        <span class="flecha-icono">&#8595;</span>
-      </a>
+        <a href="#destino" class="flecha" onclick="smoothScroll(event)">
+            <span class="flecha-icono">&#8595;</span>
+        </a>
     </div>
 
       
-      <div id="destino">
-        <div><img src="/public/images/25c1a520169aea5d34ef46ee4138711f" alt="" srcset=""></div>
-        <div id="descripcion-proyecto">
-            <h1>Proyecto tal</h1>
-            <h2>Autores</h2>
-            <p>Descripción Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur a architecto perferendis, esse doloribus saepe corrupti officia optio suscipit qui perspiciatis rem, rerum, neque laudantium consequatur tenetur vero nihil unde?</p>
-            <button id="button-proyecto">ver mas...</button>
+    <%rows.forEach(proyectos => {%>
+        <div id="destino">
+            <div><img src="<%= proyectos.imagenPrincipal %>" alt="" srcset=""></div>
+            <div id="descripcion-proyecto">
+                <h1><%= proyectos.titulo %></h1>
+                <h2>Autores: <%= proyectos.autores %></h2>
+                <p><%= proyectos.descripcionLarga %></p>
+                <a href="/detalle-proyecto-nosesion?id=<%= proyectos.id %>" id="button-proyecto">Ver más...</a>
+            </div>
         </div>
-        
-      </div>
-
-      <div id="destino">
-        <div id="descripcion-proyecto">
-            <h1>Proyecto tal</h1>
-            <h2>Autores</h2>
-            <p>Descripción Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur a architecto perferendis, esse doloribus saepe corrupti officia optio suscipit qui perspiciatis rem, rerum, neque laudantium consequatur tenetur vero nihil unde?</p>
-            <button id="button-proyecto">ver mas...</button>
-        </div>
-        
-        <div><img src="/public/images/25c1a520169aea5d34ef46ee4138711f" alt="" srcset=""></div>
-      </div>
+        <%  }) %>
       
 
       

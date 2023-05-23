@@ -38,9 +38,12 @@
 
     <section>
 
-        <h1>Registrarse</h1>
+        <h1>Registrar nuevo alumno</h1>
 
 	    <form action="/register2" method="post" enctype="multipart/form-data">
+
+        <label for="numero">Número de control:</label>
+        <input type="number" id="numero" name="numero" placeholder="Ingresa un número de control" required>       
 
 		<label for="nombre">Nombre completo:</label>
 		<input type="text" id="nombre" name="nombre" placeholder="Escribe tu nombre completo" required>
@@ -48,10 +51,11 @@
         <label for="carrera">Carrera:</label>
 		<input type="text" id="carrera" name="carrera" placeholder="Escribe tu carrera" required>
 
-        <label>Fotografia personal:</label>
-        <label for="file" class="custom-file-upload"><i class="fas fa-cloud-upload-alt"></i> Subir imagen
-        </label>
-        <input id="file" type="file" name="file"/>
+        <label for="imagen_principal">Foto:</label>
+        <label for="file" class="custom-file-upload"><i class="fas fa-cloud-upload-alt"></i> Subir imagen</label>
+        <input type="file" name="file" id="file">
+
+        <div id="imagen-principal-preview"></div>
 
 		<label for="email">Correo electrónico:</label>
 		<input type="email" id="email" name="email" placeholder="Escribe tu correo electrónico" required>
@@ -68,14 +72,30 @@
         <label for="objetivos">Objetivos a corto y largo plazo:</label>
 		<input type="text" id="nombre" name="objetivos" placeholder="Escribe aqui" required>
         
-        <input type="submit" value="Registrarse">
+        <input type="submit" value="Registrar">
 
 	</form>
 
     </section>
 
         
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+    $(document).ready(function() {
+  // Manejar cambios en el campo de imagen principal
+  $('#file').change(function(e) {
+    var file = e.target.files[0];
+    var reader = new FileReader();
 
+    reader.onload = function(e) {
+      $('#imagen-principal-preview').html('<img src="' + e.target.result + '" alt="Imagen Principal">');
+    }
+
+    reader.readAsDataURL(file);
+  });
+
+});
+    </script>
 
 </body>
 </html>

@@ -37,20 +37,29 @@
         </div>
     </header>
 
-    <div id="index">
-        <div class="image-container">
-            <img src="/public/images/img2.jpg" alt="Imagen">
-            <div class="overlay-text">
-                <h2>Bienvenido al anuario </h2>
-                <p>Puedes ver los alumnos y proyectos actuales</p>
-
-                <a href="/views/registro.html" class="button">Registrarse</a>
-                
-            </div>
+    
+    <section id="seccionpro">
+        <div id="contenedorpro" style="background-image: url('<%= results[0].imagenPrincipal %>');">
+          <div class="overlay"></div>
+          <h1><%= results[0].titulo %></h1>
+          <h2>Autores <%= results[0].autores %></h2>
+          
         </div>
-    </div>
+        <div id="descripcion-proyecto2">
+                
+                <h2>Sobre el proyecto</h2>
+                <p><%= results[0].descripcionCorta %></p>
+                
+                <img id="imagepro" src="<%=results[0].imagenesAdicionales%>" alt="" srcset="">
+                
+                <h2>Descripción larga</h2>
+                <p><%= results[0].descripcionLarga %></p>
+          </div>
+          
+      </section>
 
         
+
 
 </body>
 </html>

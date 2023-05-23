@@ -37,7 +37,14 @@
         </div>
     </header>
 
-    <section>
+    <div class="search-container">
+        <form action="/buscar" method="post">
+            <input type="number" name="searchInput" placeholder="Buscar alumno..." required>
+            <button type="submit">Buscar</button>
+        </form>
+    </div>
+
+    <section> 
 
         <div class="contenedor">
 
@@ -51,9 +58,9 @@
     
                 <div class="contenido">
                     <p><strong>Nombre:</strong><%=estudiantes.nombre %></p>
-                    <p>Carrera: <%=estudiantes.carrera %></p>
-                    <p>Intereses: <%=estudiantes.intereses %></p>
-                    <a href="#">Leer mas...</a>
+                    <p><strong>Carrera:</strong> <%=estudiantes.carrera %></p>
+                    <p><strong>Email:</strong> <%=estudiantes.email %></p>
+                    <a href="/detalle-alumno-nosesion?id=<%= estudiantes.no_control %>">Leer mas...</a>
     
                 </div>
     
@@ -65,6 +72,26 @@
 
     </section>
 
-        
+    
+    
+
+    <script>
+        const searchForm = document.getElementById('search-form');
+        const searchInput = document.getElementById('search-input');
+        const searchResults = document.getElementById('search-results');
+
+        searchForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const searchTerm = searchInput.value.trim();
+            searchAlumnos(searchTerm);
+        });
+
+        function searchAlumnos(searchTerm) {
+            // Aquí puedes implementar la lógica de búsqueda de alumnos
+            // Puedes hacer una solicitud al servidor para obtener los resultados
+            // y luego mostrarlos en la sección "search-results"
+        }
+    </script>
 </body>
 </html>
+        

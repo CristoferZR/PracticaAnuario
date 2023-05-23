@@ -12,7 +12,7 @@
     <header class="header">
         <div class="logo">
             <a href="#" id="perfilnav">
-                <h1>Bienvenido Admin</h1>
+                <h1>Detalles</h1>
             </a>
 
         </div>
@@ -37,25 +37,29 @@
     </header>
 
     <section>
-        
-        <div class="content">
-            <h2>Usuario Administrador</h2>
-            <div id="user-info">
+        <h1>Detalles del alumno</h1>
 
-                <img src="<%=user.imagen%>" alt="" srcset="">
-                <div id="info-user">
-                    <h1>Nombre</h1>
-                    <p><%=user.nombre%></p>
-                    <h1>Email</h1>
-                    <p><%=user.email%></p>
-                </div>
-                <div id="button-user">
-                    <a href="/administracionAlumnos" class="miBoton">Administrar Alumnos</a>
-                    <a href="/administracionProyectos" class="miBoton">Administrar Proyectos</a>
-                    <a href="/views/registrarAdmin.html" class="miBoton">Nuevo admin</a>
+        <div id="detallealu">
 
-                </div>
+            <div>
+                <img src="<%= results[0].imagen%>" alt="" srcset="">
             </div>
+
+            <div id="detalle-alu-nombre">
+                <h2>Nombre</h2>
+                <p><%= results[0].nombre%></p>
+                <h2>Carrera</h2>
+                <p><%= results[0].carrera%></p>
+                <h2>Email</h2>
+                <p><%= results[0].email%></p>
+                <h2>Intereses</h2>
+                <p><%= results[0].intereses%></p>
+                <h2>Habilidades</h2>
+                <p><%= results[0].habilidades%></p>
+                <h2>Objetivos</h2>
+                <p><%= results[0].objetivos%></p>
+            </div>
+        
         </div>
 
     </section>

@@ -11,9 +11,10 @@
 <body>
     <header class="header">
         <div class="logo">
-            <a href="/index.html">
-                <h1>Anuario Estudiantil</h1>
+            <a href="/welcomeEstudiante" id="perfilnav">
+                <h1>Inicio</h1>
             </a>
+
         </div>
         <div class="navigation">
 
@@ -21,62 +22,67 @@
             <div class="hamburger"></div>
 
             <ul class="menu">
-            
                 <div class="mar">
                 <button class="inbutton">
-                    <li><a href="/views/inicioSesion.html">Iniciar Sesion</a></li>
+                    
+                        <li><a href="/modificarEstudiante">Modificar</a></li>
                 </button>
                 <button class="upbutton">
-                    <li><a href="/views/registro.html">Registrarse</a></li>
+                    
+                    <li><a href="/logout">Cerrar Sesion</a></li>
                 </button>
                 </div>
             </ul>
+
         </div>
     </header>
 
+    
     <section>
 
-        <h1>Registrarse</h1>
+        <h1>Modificar Estudiante</h1>
 
-	    <form action="/register" method="post" enctype="multipart/form-data">
+	    <form action="/modificarEst" method="post" enctype="multipart/form-data">
 
-        <label for="numero">Número de control:</label>
-        <input type="number" id="numero" name="numero" placeholder="Ingresa un número de control" required>    
+        <input id="actualizarInput" name="id" type="hidden" class="id" value="<%=user.no_control%>">
 
 		<label for="nombre">Nombre completo:</label>
-		<input type="text" id="nombre" name="nombre" placeholder="Escribe tu nombre completo" required>
+		<input type="text" id="nombre" name="nombre" value="<%=user.nombre%>" required>
 
         <label for="carrera">Carrera:</label>
-		<input type="text" id="carrera" name="carrera" placeholder="Escribe tu carrera" required>
+		<input type="text" id="carrera" name="carrera" value="<%=user.carrera%>" required>
 
         <label for="imagen_principal">Foto:</label>
         <label for="file" class="custom-file-upload"><i class="fas fa-cloud-upload-alt"></i> Subir imagen</label>
         <input type="file" name="file" id="file">
+        <input type="hidden" name="current_image" value="<%=user.imagen%>">
 
-        <div id="imagen-principal-preview"></div>
+        <div id="imagen-principal-preview"><img src="<%=user.imagen%>" alt=""></div>
 
 		<label for="email">Correo electrónico:</label>
-		<input type="email" id="email" name="email" placeholder="Escribe tu correo electrónico" required>
+		<input type="email" id="email" name="email" value="<%=user.email%>" required>
 
 		<label for="password">Contraseña:</label>
-		<input type="password" id="password" name="password" placeholder="Escribe tu contraseña" required>
+		<input type="password" id="password" name="password" value="<%=user.password%>" required>
 
 		<label for="intereses">Intereses Academicos:</label>
-		<input type="text" id="nombre" name="intereses" placeholder="Escribe aqui" required>
+		<input type="text" id="nombre" name="intereses" value="<%=user.intereses%>" required>
         
         <label for="habilidades">Habilidades y fortalezas:</label>
-		<input type="text" id="nombre" name="habilidades" placeholder="Escribe aqui" required>
+		<input type="text" id="nombre" name="habilidades" value="<%=user.habilidades%>" required>
 
         <label for="objetivos">Objetivos a corto y largo plazo:</label>
-		<input type="text" id="nombre" name="objetivos" placeholder="Escribe aqui" required>
+		<input type="text" id="nombre" name="objetivos" value="<%=user.objetivos%>" required>
         
-        <input type="submit" value="Registrarse" onclick="alert('Alumno registrado')">
+        <input type="submit" value="Modificar" onclick="alert('Cambios aplicados, necesita reiniciar su sesion para ver los cambios')">
 
 	</form>
 
     </section>
 
-        
+
+    
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
     $(document).ready(function() {

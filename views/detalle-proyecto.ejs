@@ -12,7 +12,7 @@
     <header class="header">
         <div class="logo">
             <a href="#" id="perfilnav">
-                <h1>Bienvenido Admin</h1>
+                <h1>Detalles</h1>
             </a>
 
         </div>
@@ -36,29 +36,28 @@
         </div>
     </header>
 
-    <section>
-        
-        <div class="content">
-            <h2>Usuario Administrador</h2>
-            <div id="user-info">
-
-                <img src="<%=user.imagen%>" alt="" srcset="">
-                <div id="info-user">
-                    <h1>Nombre</h1>
-                    <p><%=user.nombre%></p>
-                    <h1>Email</h1>
-                    <p><%=user.email%></p>
-                </div>
-                <div id="button-user">
-                    <a href="/administracionAlumnos" class="miBoton">Administrar Alumnos</a>
-                    <a href="/administracionProyectos" class="miBoton">Administrar Proyectos</a>
-                    <a href="/views/registrarAdmin.html" class="miBoton">Nuevo admin</a>
-
-                </div>
-            </div>
+    <section id="seccionpro">
+        <div id="contenedorpro" style="background-image: url('<%= results[0].imagenPrincipal %>');">
+          <div class="overlay"></div>
+          <h1><%= results[0].titulo %></h1>
+          <h2>Autores <%= results[0].autores %></h2>
+          
         </div>
+        <div id="descripcion-proyecto2">
+                
+                <h2>Sobre el proyecto</h2>
+                <p><%= results[0].descripcionCorta %></p>
+                
+                <img id="imagepro" src="<%=results[0].imagenesAdicionales%>" alt="" srcset="">
+                
+                <h2>Descripción larga</h2>
+                <p><%= results[0].descripcionLarga %></p>
+          </div>
+          
+      </section>
 
-    </section>
+        
+
 
 </body>
 </html>

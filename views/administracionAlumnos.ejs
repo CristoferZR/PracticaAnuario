@@ -28,7 +28,7 @@
                 
                 <div class="mar">
                 <button class="sbutton">
-                    <li><a href="/views/registroAdmin.html">Nuevo alumno</a></li>
+                    <li><a href="/views/registroAluAdmin.html">Nuevo alumno</a></li>
                 </button>
                 <button class="upbutton">
                     <li><a href="/logout">Cerrar Sesion</a></li>
@@ -42,7 +42,7 @@
     <table id="tablaDatos">
       <thead>
         <tr>
-          <th>ID</th>
+          <th>No.Control</th>
           <th>Nombre</th>
           <th>Carrera</th>
           <th>Email</th>
@@ -54,7 +54,7 @@
       <tbody>
         <% rows.forEach(estudiante => { %>
           <tr class="fila-dato" onclick="seleccionarFila(this)">
-            <td><%= estudiante.id %></td>
+            <td><%= estudiante.no_control %></td>
             <td><%= estudiante.nombre %></td>
             <td><%= estudiante.carrera %></td>
             <td><%= estudiante.email %></td>
