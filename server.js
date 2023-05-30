@@ -9,21 +9,22 @@ app.use(express.json());
 
 /*--------------Variables para la conexion a la base de datos------------*/
 
-const PORT = process.env.PORT || 3000
 
+const PORT = process.env.PORT || 3000
+/*
  const DB_HOST = process.env.DB_HOST || 'localhost'
  const DB_USER = process.env.DB_USER || 'cris'
  const DB_PASS = process.env.DB_PASS || '1234'
  const DB_NAME = process.env.DB_NAME || 'anuario'
  const DB_PORT = process.env.DB_PORT || '3000'
-
+*/
 
 const connection = mysql.createConnection({
 
-    host : DB_HOST,
-    user : DB_USER,
-    password : DB_PASS,
-    database : DB_NAME,
+    host : 'localhost',
+    user : 'cris',
+    password : '1234',
+    database : 'anuario',
     
 }) 
 
